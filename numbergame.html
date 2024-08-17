@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+    <head>
+        <style>
+            body{
+                width: 500px;
+                margin: auto;
+                margin-top: 20px;
+            }
+            #container{
+                height: 500px;
+                width: 500px;
+                border: 10px gray solid;
+            }
+            .square{
+                border: 10px gray solid;
+                height: 80px;
+                width: 80px;
+                float: left;
+                font-size:30px;
+                line-height: 80px;
+                text-align: center;
+            }
+            .square:hover{
+                background-color: rgb(215, 215, 215);
+            }
+            #resultsboard{
+                height: 130px;
+                background-color: aquamarine;
+                font-size: 25px;
+                text-align: center;
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id ="resultsboard"></div>
+        <div id="container">
+            <div class="square" value="11" onclick="chooseSquare(event)"></div>
+            <div class="square" value="12" onclick="chooseSquare(event)"></div>
+            <div class="square" value="13" onclick="chooseSquare(event)"></div>
+            <div class="square" value="14" onclick="chooseSquare(event)"></div>
+            <div class="square" value="15" onclick="chooseSquare(event)"></div>
+            <div class="square" value="21" onclick="chooseSquare(event)"></div>
+            <div class="square" value="22" onclick="chooseSquare(event)"></div>
+            <div class="square" value="23" onclick="chooseSquare(event)"></div>
+            <div class="square" value="24" onclick="chooseSquare(event)"></div>
+            <div class="square" value="25" onclick="chooseSquare(event)"></div>
+            <div class="square" value="31" onclick="chooseSquare(event)"></div>
+            <div class="square" value="32" onclick="chooseSquare(event)"></div>
+            <div class="square" value="33" onclick="chooseSquare(event)"></div>
+            <div class="square" value="34" onclick="chooseSquare(event)"></div>
+            <div class="square" value="35" onclick="chooseSquare(event)"></div>
+            <div class="square" value="41" onclick="chooseSquare(event)"></div>
+            <div class="square" value="42" onclick="chooseSquare(event)"></div>
+            <div class="square" value="43" onclick="chooseSquare(event)"></div>
+            <div class="square" value="44" onclick="chooseSquare(event)"></div>
+            <div class="square" value="45" onclick="chooseSquare(event)"></div>
+            <div class="square" value="51" onclick="chooseSquare(event)"></div>
+            <div class="square" value="52" onclick="chooseSquare(event)"></div>
+            <div class="square" value="53" onclick="chooseSquare(event)"></div>
+            <div class="square" value="54" onclick="chooseSquare(event)"></div>
+            <div class="square" value="55" onclick="chooseSquare(event)"></div>
+        </div>
+        <div id="testdiv"></div>
+        <div id="testdiv2"></div>
+        <div id="testdiv3"></div>
+        <div id="testdiv4"></div>
+        <div id="testdiv5"></div>
+        <div id="timer"></div>
+        <script>
+            var currentScore = 1;
+            let row = 0;
+            let col = 0;
+            let pRow = 0;
+            let pCol = 0;
+            let value = "";
+            var seconds = 0;
+            var listOfSquares = document.querySelectorAll('.square');
+            let interval1;
+            let optionCount = 0;
+            var timer =()=>{
+                document.getElementById("timer").innerHTML = `${seconds.toFixed(1)}`;
+                seconds+= 0.2;
+            }
+            var endGame =()=>{
+                listOfSquares.forEach(element => {
+                    element.style.backgroundColor = "white";
+                });
+                clearInterval(interval1);
+                document.getElementById("resultsboard").innerHTML = `GAME OVER<br>Score: ${currentScore-1}<br>Time: ${seconds.toFixed(1)}<br>Points: ${(10*currentScore/Math.sqrt(seconds+1)).toFixed(1)}`;
+                document.getElementById("resultsboard").style.display = "block";
+            }
+            var chooseSquare=(event)=>{
+                var clickedSquare = event.target;
+                if (clickedSquare.value != "-"){
+                    optionCount = 0;
+                    value = event.target.getAttribute('value');
+                    pRow = row;
+                    pCol = col;
+                    row = Number(value[0]);
+                    col = Number(value[1]);
+                    clickedSquare.value = "-";
+                    if (currentScore == 1){
+                        clickedSquare.innerHTML = currentScore;
+                        currentScore++;
+                        interval1 = setInterval(timer, 200);
+                        listOfSquares.forEach(element => {
+                        element.style.backgroundColor = "white"
+                        let valueNum = element.getAttribute("value");
+                    if (Math.abs(Number(valueNum[0]) - row) == 2 && Math.abs(Number(valueNum[1]) - col) == 2 && element.innerHTML == ""){
+                        element.style.backgroundColor = "rgb(224, 225, 255)";
+                        clickedSquare.value = "-";
+                    }
+                    else if ((Math.abs(Number(valueNum[0]) - row) == 3 && Math.abs(Number(valueNum[1]) - col) == 0 && element.innerHTML == "")){
+                        element.style.backgroundColor = "rgb(224, 225, 255)";
+                        clickedSquare.value = "-";
+
+                    }
+                    else if ((Math.abs(Number(valueNum[0]) - row) == 0 && Math.abs(Number(valueNum[1]) - col) == 3 && element.innerHTML == "")){
+                        element.style.backgroundColor = "rgb(224, 225, 255)";
+                        clickedSquare.value = "-";
+                    }
+                });
+                        }
+                        else{
+                            if (event.target.style.backgroundColor != "white"){
+                                if (Math.abs(row-pRow) == 2 && Math.abs(col-pCol) == 2){
+                                    clickedSquare.innerHTML = currentScore;
+                                currentScore++;
+                                }
+                                else if ((Math.abs(row-pRow) == 3 && Math.abs(col-pCol) == 0)){
+                                    clickedSquare.innerHTML = currentScore;
+                                currentScore++;
+                                }
+                                else if ((Math.abs(row-pRow) == 0 && Math.abs(col-pCol) == 3)){
+                                    clickedSquare.innerHTML = currentScore;
+                                currentScore++;
+                                }
+                    listOfSquares.forEach(element => {
+                        element.style.backgroundColor = "white"
+                        let valueNum = element.getAttribute("value");
+                    if (Math.abs(Number(valueNum[0]) - row) == 2 && Math.abs(Number(valueNum[1]) - col) == 2 && element.innerHTML == ""){
+                        element.style.backgroundColor = "rgb(224, 225, 255)";
+                        clickedSquare.value = "-";
+                    }
+                    else if ((Math.abs(Number(valueNum[0]) - row) == 3 && Math.abs(Number(valueNum[1]) - col) == 0 && element.innerHTML == "")){
+                        element.style.backgroundColor = "rgb(224, 225, 255)";
+                        clickedSquare.value = "-";
+
+                    }
+                    else if ((Math.abs(Number(valueNum[0]) - row) == 0 && Math.abs(Number(valueNum[1]) - col) == 3 && element.innerHTML == "")){
+                        element.style.backgroundColor = "rgb(224, 225, 255)";
+                        clickedSquare.value = "-";
+                    }
+                });
+                            }
+                            else{
+                                endGame();
+                            }
+
+                        }
+                        listOfSquares.forEach(element =>{
+
+                            if (element.style.backgroundColor == "rgb(224, 225, 255)"){
+                                optionCount++;
+                            }
+                        });
+                        if(optionCount == 0){
+                            endGame();
+                        }
+
+                }
+/*                 listOfSquares.forEach(element => {
+                    if (value == event.target.getAttribute('value')){
+                        element.innerHTML == currentScore;
+                    }
+                }); */
+                
+                document.getElementById("testdiv").innerHTML = `row = ${row}`;
+                document.getElementById("testdiv2").innerHTML = `col = ${col}`;
+                document.getElementById("testdiv3").innerHTML = `currentScore = ${currentScore-1}`;
+                document.getElementById("testdiv4").innerHTML = `row = ${pRow}<br> col = ${pCol} <br> rowD = ${Math.abs(row-pRow)} <br> colD = ${Math.abs(col-pCol)} `;
+                document.getElementById("testdiv5").innerHTML = `optionCount = ${optionCount}`;
+            }
+
+
+        </script>
+    </body>
+</html>
